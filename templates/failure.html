@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ошибка оплаты</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .failure-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        .failure-icon {
+            font-size: 80px;
+            color: #f44336;
+            margin-bottom: 20px;
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .failure-title {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .failure-message {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+        
+        .error-details {
+            background: #fff5f5;
+            border: 2px solid #ffebee;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        
+        .error-details h3 {
+            color: #d32f2f;
+            font-size: 18px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .suggestions {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .suggestions h4 {
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        
+        .suggestions ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .suggestions li {
+            color: #666;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .suggestions li:before {
+            content: "💡";
+            position: absolute;
+            left: 0;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(33, 150, 243, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #666;
+            border: 2px solid #e9ecef;
+        }
+        
+        .btn-secondary:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+        
+        .contact-info {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        .test-cards {
+            background: #fff3e0;
+            border: 1px solid #ffcc02;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #e65100;
+        }
+        
+        .test-cards h5 {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .test-cards p {
+            margin-bottom: 5px;
+        }
+        
+        @media (max-width: 600px) {
+            .failure-container {
+                padding: 30px 20px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="failure-container">
+        <div class="failure-icon">❌</div>
+        
+        <h1 class="failure-title">Оплата не прошла</h1>
+        
+        <p class="failure-message">
+            К сожалению, {{ customer_name }}, произошла ошибка при обработке вашего платежа. 
+            Пожалуйста, попробуйте еще раз или используйте другую карту.
+        </p>
+        
+        <div class="error-details">
+            <h3>Детали ошибки</h3>
+            
+            <div class="error-message">
+                {{ result.error }}
+            </div>
+            
+            <div class="suggestions">
+                <h4>Что можно сделать:</h4>
+                <ul>
+                    <li>Проверьте правильность введенных данных карты</li>
+                    <li>Убедитесь, что на карте достаточно средств</li>
+                    <li>Попробуйте использовать другую карту</li>
+                    <li>Обратитесь в банк-эмитент карты</li>
+                    <li>Проверьте, не заблокирована ли карта</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <a href="/" class="btn btn-primary">Попробовать снова</a>
+            <button onclick="history.back()" class="btn btn-secondary">Назад</button>
+        </div>
+        
+        <div class="contact-info">
+            📞 Если проблема повторяется, обратитесь в службу поддержки: 
+            <strong>+7 (800) 123-45-67</strong>
+        </div>
+        
+        <div class="test-cards">
+            <h5>🧪 Тестовые карты для проверки:</h5>
+            <p><strong>4000000000000002</strong> - Карта отклонена</p>
+            <p><strong>4000000000009995</strong> - Недостаточно средств</p>
+            <p><strong>4000000000009987</strong> - Карта потеряна</p>
+            <p><strong>4000000000009979</strong> - Карта украдена</p>
+            <p><strong>4000000000000069</strong> - Карта просрочена</p>
+        </div>
+    </div>
+    
+    <script>
+        // Добавляем анимацию появления
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.failure-container');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                container.style.transition = 'all 0.5s ease';
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            }, 100);
+        });
+        
+        // Автоматическое скрытие тестовых карт через 10 секунд
+        setTimeout(() => {
+            const testCards = document.querySelector('.test-cards');
+            if (testCards) {
+                testCards.style.transition = 'opacity 0.5s ease';
+                testCards.style.opacity = '0.3';
+            }
+        }, 10000);
+    </script>
+</body>
+</html>
